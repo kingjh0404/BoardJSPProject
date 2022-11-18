@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@page import="com.example.dao.BoardDAO, com.example.bean.BoardVO,java.util.*"%>
+<%@page import="com.example.dao.MemberDAO, com.example.bean.MemberVO,java.util.*"%>
+<%@ page import="java.io.File" %>
+<%@ page import="com.oreilly.servlet.MultipartRequest" %>
+<%@ page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
@@ -36,31 +39,54 @@
 </script>
 </head>
 <body>
-<h1>자유게시판</h1>
+<h1>회원 관리</h1>
 <%
-	BoardDAO boardDAO = new BoardDAO();
-	List<BoardVO> list = boardDAO.getBoardList();
+	MemberDAO memberDAO = new MemberDAO();
+	List<MemberVO> list = memberDAO.getList();
 	request.setAttribute("list",list);
 %>
+<%--<%--%>
+<%--	String filename="";--%>
+<%--	int sizeLimit = 15 * 1024 *1024;--%>
+<%--	String realPath = request.getServletContext().getRealPath("upload");--%>
+<%--	File dir = new File(realPath);--%>
+<%--	if(!dir.exists())dir.mkdirs();--%>
+
+<%--	MultipartRequest multipartRequest = new MultipartRequest(request,realPath,sizeLimit,"utf-8",new DefaultFileRenamePolicy());--%>
+<%--	filename = multipartRequest.getFilesystemName("photo");--%>
+
+<%--%>--%>
 <table id="list" width="90%">
 <tr>
-	<th>Id</th>
-	<th>Title</th>
-	<th>Writer</th>
-	<th>Content</th>
+	<th>no</th>
+	<th>USER Id</th>
+	<th>Veiw</th>
+	<th>Password</th>
+	<th>USER NAME</th>
+	<th>EMAIL</th>
+
+<%--	<th>Writer</th>--%>
+<%--	<th>Content</th>--%>
 	<th>Regdate</th>
 	<th>Edit</th>
 	<th>Delete</th>
 </tr>
 <c:forEach items="${list}" var="u">
 	<tr>
-		<td>${u.getSeq()}</td>
-		<td>${u.getTitle()}</td>
-		<td>${u.getWriter()}</td>
-		<td>${u.getContent()}</td>
+		<td>${u.getSid()}</td>
+		<td>${u.getUserid()}</td>
+		<td><img src = "${pageContext.request.contextPath}/upload/${u.getPhoto()}"></td>
+		<td>${u.getPassword()}</td>
+		<td>${u.getUsername()}</td>
+		<td>${u.getEmail()}</td>
+
+<%--		<td>${u.getWriter()}</td>--%>
+<%--		<td>${u.getContent()}</td>--%>
+
 		<td>${u.getRegdate()}</td>
-		<td><a href="editform.jsp?id=${u.getSeq()}">Edit</a></td>
-		<td><a href="javascript:delete_ok('${u.getSeq()}')">Delete</a></td>
+
+		<td><a href="editform.jsp?id=${u.getSid()}">Edit</a></td>
+		<td><a href="javascript:delete_ok('${u.getSid()}')">Delete</a></td>
 	</tr>
 </c:forEach>
 </table>
